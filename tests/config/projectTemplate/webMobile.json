@@ -1,0 +1,54 @@
+{
+  "config_default": {
+    "name": "cron-auto",
+    "backup": "Não",
+    "config": {
+      "idAplication": "",
+      "includeFrontEnd": true,
+      "includeBackEnd": true,
+      "includeAuth": false,
+      "typeAuth": "",
+      "loginSocial": false,
+      "mutualAuth": false
+    }
+  },
+  "config_test": {
+    "name": "cron-auto-test",
+    "backup": "Não",
+    "config": {
+      "idAplication": "test",
+      "includeFrontEnd": false,
+      "includeBackEnd": false,
+      "includeAuth": false,
+      "typeAuth": "SSO",
+      "loginSocial": true,
+      "mutualAuth": true
+    }
+  },
+  "config_front": {
+    "name": "cron-auto-front",
+    "backup": "Não",
+    "config": {
+      "idAplication": "",
+      "includeFrontEnd": true,
+      "includeBackEnd": false,
+      "includeAuth": false,
+      "typeAuth": "",
+      "loginSocial": false,
+      "mutualAuth": false
+    }
+  },
+  "config_back": {
+    "name": "cron-auto-back",
+    "backup": "Não",
+    "config": {
+      "idAplication": "",
+      "includeFrontEnd": false,
+      "includeBackEnd": true,
+      "includeAuth": true,
+      "typeAuth": "",
+      "loginSocial": false,
+      "mutualAuth": false
+    }
+  }
+}
