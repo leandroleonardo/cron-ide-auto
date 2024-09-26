@@ -30,28 +30,4 @@ export class Cloud {
   async serviceUpdate() {
     await this.iframe.locator('//*[text()="Atualizar"]').click();
   }
-
-  async incrementMinimumInstance(quantity) {
-    for (let i = 0; i < quantity; i++) {
-      await this.iframe.locator("(//*[@tabindex='28'])[2]/*[2]/*[1]").click();
-    }
-  }
-
-  async decrementMinimumInstance(quantity) {
-    for (let i = 0; i < quantity; i++) {
-      await this.iframe.locator("(//*[@tabindex='28'])[2]/*[2]/*[2]").click();
-    }
-  }
-
-  async incrementMaximumInstance(quantity) {
-    for (let i = 0; i < quantity; i++) {
-      await this.iframe.locator("(//*[@tabindex='30'])/*[2]/*[1]").click();
-    }
-  }
-
-  async decrementMaximumInstance(quantity) {
-    for (let i = 0; i < quantity; i++) {
-      await this.iframe.locator("(//*[@tabindex='30'])/*[2]/*[2]").click();
-    }
-  }
 }

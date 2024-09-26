@@ -1,5 +1,5 @@
-import project from '../../config/projectTemplate/webMobile.json';
-import { InitialNavegate } from '../InitialNavegate';
+import project from '../../../config/projectTemplate/webMobile.json';
+import { InitialNavegate } from '../../InitialNavegate';
 
 let initialNavegate;
 
@@ -10,18 +10,17 @@ export class WebMobile {
     initialNavegate = new InitialNavegate(page, context);
   }
 
-  async createProjectMobileWeb(config) {
-    const name = project[config].name;
+  async createProjectMobileWeb(projectName, config) {
     const nextButton = await this.iframe.locator('div[ui-id="template-next-button"]');
     const backupOptionLocator = project[config].backup == 'Sim' ? '//*[text()="Sim"]' : '(//*[text()="Não"])[2]';
 
-    await initialNavegate.searchProject(name);
-    const projectExistis = await this.iframe.getByText(name).nth(1).isVisible();
+    await initialNavegate.searchProject(projectName);
+    const projectExistis = await this.iframe.getByText(projectName).nth(1).isVisible();
     if (projectExistis) await initialNavegate.deleteProject();
 
     await this.iframe.getByText('+ Novo Projeto').nth(1).click();
     await this.iframe.getByText('Mobile e Web').click();
-    await this.iframe.locator('input[ui-id="newProject-projectName-input"]').fill(name);
+    await this.iframe.locator('input[ui-id="newProject-projectName-input"]').fill(projectName);
     await this.iframe.getByText('Finalizar').click();
 
     await this.iframe.locator('[ui-id="template-item-cronapp-rad-project-mobile-cordova"]').click();
@@ -40,14 +39,14 @@ export class WebMobile {
 
     await this.iframe.getByText(' Started').waitFor({ timeout: 90000 });
 
-    await this.page.waitForTimeout(47000);
+    await this.page.waitForTimeout(60000);
   }
 
   async configureTheProject(config) {
     const configOption = async (option, configField) => {
       let selectedOption = project[config].config[configField];
       let locatorOption = this.iframe.locator(`[ui-id="wizard-template-${option}-control"]`);
-      let locatorYes = this.iframe.getByText('Sim').nth(1); //locator('(//*[text()="Sim"])[2]');
+      let locatorYes = this.iframe.getByText('Sim').nth(1);
 
       if (option == 'frontend' || option == 'backend') selectedOption = !selectedOption;
       if (selectedOption) await locatorOption.click();
@@ -69,18 +68,6 @@ export class WebMobile {
     }
   }
 
-  async executeProject() {
-    await this.iframe.locator('div[ui-id="openProject-startDebugItem"]').click();
-    const navegateWebOption = this.iframe.locator("//*[text()='Navegador (Web)']");
-    await navegateWebOption.waitFor({ timeout: 300000 });
-    await this.page.waitForTimeout(2000);
-    await this.iframe.getByText('Navegador (Web)').click();
-  }
-
-  async runBack() {
-    await this.iframe.locator('[ui-id="openProject-startDebugItem"]').first().click();
-  }
-
   async runProject(device) {
     await this.iframe.locator('[ui-id="openProject-startDebugItem"]').first().click();
     await this.iframe
@@ -90,7 +77,7 @@ export class WebMobile {
     if (device) await this.iframe.locator(`[ui-id="openProject-runMobileWeb-${device}-btn"]`).click();
   }
 
-  async accessRunningWebmobile(newPage) {
+  async loginRunningWebmobile(newPage) {
     await newPage.waitForLoadState('load');
 
     await newPage.isVisible('div[data-component="crn-image"]');
@@ -103,7 +90,13 @@ export class WebMobile {
   }
 
   async loginWithSSO(newPage) {
-    //const newPage = await context.waitForEvent('page');
-    newPage.getByText('Login').click();
+    await newPage.getByText('Login').click();
+  }
+
+  async closeProject() {
+    await this.iframe.getByText('Projeto').first().click();
+    await this.iframe.getByText('Fechar').click();
+    await this.iframe.getByText('Sim').click();
+    await this.page.waitForTimeout(10000);
   }
 }

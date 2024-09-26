@@ -11,7 +11,7 @@ const { defineConfig, devices } = require('@playwright/test');
  * @see https://playwright.dev/docs/test-configuration
  */
 module.exports = defineConfig({
-  workers: 1,
+  // workers: 1,
   // Define o número de workers para 1, desativando o paralelismo
   testDir: './tests',
   /* Run tests in files in parallel */

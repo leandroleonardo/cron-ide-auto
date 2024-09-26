@@ -1,4 +1,3 @@
-//import project from '../config/projectTemplate/webMobile.json';
 import ide from '../config/ide.json';
 import versionApp from '../versionApp.json';
 
@@ -22,8 +21,13 @@ export class InitialNavegate {
     await this.page.click('#btnEntrar');
 
     await this.iframe.locator('select[name="billing_subscription"]').selectOption({ index: index_memory });
-
     await this.iframe.locator(`#memory_${ide.memory}`).click();
+
+    await this.iframe.locator('[ui-id="shell"]');
+    await this.page.waitForTimeout(4000);
+
+    let updatePopupIsVisible = await this.iframe.locator('[ui-id="shell"]').isVisible();
+    if (updatePopupIsVisible) await this.iframe.getByText('OK').nth(1).click();
   }
 
   async getVersion() {
@@ -79,25 +83,13 @@ export class InitialNavegate {
       }
     };
 
-    //await this.page.pause();
-
     await this.page.waitForTimeout(10000);
+
     await popupIsVisible('As seguintes bibliotecas têm novas versões. Gostaria de atualizá-las?', true);
     await popupIsVisible('Deseja habilitar o backup automático deste projeto?', false);
 
-    await this.iframe.getByText(' Started').waitFor({ timeout: 60000 });
+    await this.iframe.getByText(' Started').waitFor({ timeout: 70000 });
     await this.page.waitForTimeout(15000);
-
-    // [INFO] BUILD SUCCESS
-
-    //const teste = this.iframe.locator('[data-mode-id="Log"]');
-
-    //await this.iframe.getByText('SAÍDA').nth(1).dblclick();
-    //await this.page.waitForTimeout(2000);
-    //await this.iframe.mouse.wheel(0, 10000);
-
-    //await this.page.pause();
-    //[data-mode-id="Log"]
   }
 
   async navegateToLink(linkTitle) {

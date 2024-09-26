@@ -1,4 +1,4 @@
 {
-  "env": "ide",
-  "memory": "2gb"
+  "env": "ide-s",
+  "memory": "1gb"
 }

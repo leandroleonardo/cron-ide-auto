@@ -1,11 +1,10 @@
 const { InitialNavegate } = require('../../pages/InitialNavegate');
-const { WebMobile } = require('../../pages/createLowCode/WebMobile');
+const { WebMobile } = require('../../pages/project/lowCode/WebMobile');
 const { test, expect } = require('@playwright/test');
 
 let initialNavegate, image, webMobile;
 
 test.beforeEach(async ({ page, context }) => {
-  await page.setViewportSize({ width: 1300, height: 600 });
   initialNavegate = new InitialNavegate(page, context);
   webMobile = new WebMobile(page, context);
 });

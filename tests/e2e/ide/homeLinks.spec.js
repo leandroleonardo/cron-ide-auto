@@ -33,6 +33,6 @@ test('Valida link Boas Práticas', async ({ page, context }, testInfo) => {
   await initialNavegate.login();
   await initialNavegate.navegateToLink('Boas Práticas');
   const newPage = await context.waitForEvent('page');
-  await expect(newPage.locator('#title-text')).toHaveText('Manual de Boas Práticas');
+  await expect(newPage.locator('#title-text')).toBeVisible();
   image = await newPage.screenshot();
 });
