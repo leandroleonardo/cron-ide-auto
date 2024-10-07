@@ -6,8 +6,6 @@ const { test, expect } = require('@playwright/test');
 let initialNavegate, iframe, webMobile, dataBase;
 
 test.beforeEach(async ({ page, context }) => {
-  test.setTimeout(360000);
-
   iframe = page.frameLocator('#main');
   initialNavegate = new InitialNavegate(page, context);
   webMobile = new WebMobile(page, context);
@@ -26,47 +24,47 @@ test.afterEach(async ({ page, context }, testInfo) => {
   });
 });
 
-test.describe.only('Execução 1 - Cloud', () => {
-  const nameProject = 'cron-auto-db-1';
+test.describe('Execução 1', () => {
   test.describe.configure({ mode: 'serial' });
-  test.setTimeout(360000);
+
+  const projectName = 'cron-auto-db-1';
 
   test('Cria projeto para execuções', async () => {
-    await webMobile.createProjectMobileWeb(nameProject, 'config_default');
+    await webMobile.createProjectMobileWeb(projectName);
   });
 
   test('Acessar tela de banco de dados', async ({ page, context }, testInfo) => {
-    await initialNavegate.openProject(nameProject);
+    await initialNavegate.openProject(projectName);
     await dataBase.accessDataBase();
     await expect(iframe.getByText('jdbc/main')).toBeVisible();
   });
 
   test('Deleta projeto', async () => {
-    await initialNavegate.searchProject(nameProject);
+    await initialNavegate.searchProject(projectName);
     await initialNavegate.deleteProject();
-    await expect(iframe.getByText(nameProject).nth(1)).toBeHidden();
+    await expect(iframe.getByText(projectName).nth(1)).toBeHidden();
   });
 });
 
-test.describe.only('Execução 2 - Cloud', () => {
-  const nameProject = 'cron-auto-db-2';
+test.describe('Execução 2', () => {
   test.describe.configure({ mode: 'serial' });
-  test.setTimeout(360000);
+
+  const projectName = 'cron-auto-db-2';
 
   test('Cria projeto', async () => {
-    await webMobile.createProjectMobileWeb(nameProject, 'config_default');
+    await webMobile.createProjectMobileWeb(projectName);
   });
 
   test('Acessar tela de Adicionar banco de dados', async ({ page, context }, testInfo) => {
-    await initialNavegate.openProject(nameProject);
+    await initialNavegate.openProject(projectName);
     await dataBase.accessDataBase();
     await dataBase.accessAddDataBase();
     await expect(iframe.getByText('Novo banco de dados na nuvem')).toBeVisible();
   });
 
   test('Deleta projeto', async () => {
-    await initialNavegate.searchProject(nameProject);
+    await initialNavegate.searchProject(projectName);
     await initialNavegate.deleteProject();
-    await expect(iframe.getByText(nameProject).nth(1)).toBeHidden();
+    await expect(iframe.getByText(projectName).nth(1)).toBeHidden();
   });
 });

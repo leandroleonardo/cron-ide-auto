@@ -1,5 +1,4 @@
 import ide from '../config/ide.json';
-import versionApp from '../versionApp.json';
 
 export class InitialNavegate {
   constructor(page, context) {
@@ -13,39 +12,30 @@ export class InitialNavegate {
   }
 
   async login() {
-    const index_memory = ide.env == 'ide-s' ? 0 : 1;
+    const account_type = ide.env == 'ide-s' || ide.env == 'ide-a' ? 0 : 1;
 
     await this.page.waitForTimeout(1000);
     await this.page.locator('#username').fill(process.env.EMAIL);
     await this.page.locator('#password').fill(process.env.PASSWORD);
     await this.page.click('#btnEntrar');
 
-    await this.iframe.locator('select[name="billing_subscription"]').selectOption({ index: index_memory });
+    await this.iframe.locator('select[name="billing_subscription"]').selectOption({ index: account_type });
     await this.iframe.locator(`#memory_${ide.memory}`).click();
 
-    await this.iframe.locator('[ui-id="shell"]');
-    await this.page.waitForTimeout(4000);
-
-    let updatePopupIsVisible = await this.iframe.locator('[ui-id="shell"]').isVisible();
-    if (updatePopupIsVisible) await this.iframe.getByText('OK').nth(1).click();
+    await this.page.waitForTimeout(15000);
+    let updatePopupIsVisible = await this.iframe
+      .locator("//text()[contains(., 'Nova versão do Cronapp lançada')]")
+      .isVisible();
+    console.log(updatePopupIsVisible);
+    if (updatePopupIsVisible) await this.iframe.getByText('OK').click();
   }
 
   async getVersion() {
-    const fs = require('fs');
     await this.iframe.getByText('Ajuda').click();
     await this.iframe.getByText('Sobre').click();
-    const ideVersion = await this.page.frameLocator('#main').getByText('Modelo').textContent();
+    const ideVersion = await this.iframe.getByText('Modelo').textContent();
     await this.iframe.getByText('OK').nth(1).click();
-
-    const content = `{"ide":"${ideVersion?.substring(8, 19)}"}`;
-
-    fs.writeFile('tests\\versionApp.json', '', function (err) {
-      if (err) console.log(`Erro ao limpar o arquivo: ${err}`);
-    });
-
-    fs.appendFile('tests\\versionApp.json', content, err => {
-      if (err) console.error('Erro ao adicionar a linha:', err);
-    });
+    return ideVersion.substring(8, 19);
   }
 
   async searchProject(name) {
@@ -58,9 +48,10 @@ export class InitialNavegate {
   }
 
   async deleteProject() {
-    const deleteButton = `//div[contains (@style, 'rwt-resources/generated/${versionApp.ide}/workspace/tree/delete.svg')]`;
-    await this.iframe.locator(deleteButton).click();
+    const deleteButton = `//div[contains (@style, 'rwt-resources/generated/${await this.getVersion()}/workspace/tree/delete.svg')]`;
+    await this.iframe.locator(deleteButton).first().click();
     await this.iframe.getByText('Sim').click();
+    await this.page.waitForTimeout(500);
   }
 
   async openProject(name) {
@@ -78,6 +69,8 @@ export class InitialNavegate {
       let selectedOption = option ? '//*[text()="Sim"]' : '(//*[text()="Não"])[2]';
       let isVisible = await this.iframe.getByText(text).isVisible();
       if (isVisible) {
+        if (text == 'As seguintes bibliotecas têm novas versões. Gostaria de atualizá-las?')
+          console.log('-- Atualizou! --');
         await this.iframe.locator(selectedOption).click();
         if (option) await this.page.waitForTimeout(25000);
       }
@@ -88,7 +81,7 @@ export class InitialNavegate {
     await popupIsVisible('As seguintes bibliotecas têm novas versões. Gostaria de atualizá-las?', true);
     await popupIsVisible('Deseja habilitar o backup automático deste projeto?', false);
 
-    await this.iframe.getByText(' Started').waitFor({ timeout: 70000 });
+    await this.iframe.getByText(' Started').waitFor({ timeout: 100000 });
     await this.page.waitForTimeout(15000);
   }
 

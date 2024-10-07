@@ -12,9 +12,10 @@ export class WebMobile {
 
   async createProjectMobileWeb(projectName, config) {
     const nextButton = await this.iframe.locator('div[ui-id="template-next-button"]');
-    const backupOptionLocator = project[config].backup == 'Sim' ? '//*[text()="Sim"]' : '(//*[text()="Não"])[2]';
 
     await initialNavegate.searchProject(projectName);
+    await this.page.waitForTimeout(1000);
+
     const projectExistis = await this.iframe.getByText(projectName).nth(1).isVisible();
     if (projectExistis) await initialNavegate.deleteProject();
 
@@ -27,17 +28,14 @@ export class WebMobile {
     await this.page.waitForTimeout(1000);
     await nextButton.click();
     await this.page.waitForTimeout(1000);
-
-    await this.configureTheProject(config);
-
+    if (config) await this.configureTheProject(config);
     await this.page.waitForTimeout(500);
     await nextButton.click();
     await this.page.waitForTimeout(500);
     await this.iframe.locator('[ui-id="template-finish-button"]').click({ delay: 1000 });
     await this.iframe.locator('[ui-id="dialog_confirmation"]').waitFor({ timeout: 120000 });
-    await this.iframe.locator(backupOptionLocator).click();
-
-    await this.iframe.getByText(' Started').waitFor({ timeout: 90000 });
+    await this.iframe.locator('(//*[text()="Não"])[2]').click();
+    await this.iframe.getByText(' Started').waitFor({ timeout: 100000 });
 
     await this.page.waitForTimeout(60000);
   }
@@ -86,7 +84,7 @@ export class WebMobile {
     await newPage.locator('div[id="crn-button-login"]').click();
 
     await newPage.getByText('Admin').click();
-    await newPage.getByText('Users').click();
+    await newPage.getByText('Usuários').click();
   }
 
   async loginWithSSO(newPage) {

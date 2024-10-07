@@ -10,9 +10,8 @@ const { defineConfig, devices } = require('@playwright/test');
 /**
  * @see https://playwright.dev/docs/test-configuration
  */
+
 module.exports = defineConfig({
-  // workers: 1,
-  // Define o número de workers para 1, desativando o paralelismo
   testDir: './tests',
   /* Run tests in files in parallel */
   fullyParallel: true,
@@ -28,9 +27,12 @@ module.exports = defineConfig({
   use: {
     /* Base URL to use in actions like `await page.goto('/')`. */
     // baseURL: 'http://127.0.0.1:3000',
-
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
     trace: 'on-first-retry',
+    // Sets the language to Brazilian Portuguese
+    locale: 'pt-BR',
+    // Sets the number of workers to 2, disabling parallelism
+    workers: 2,
   },
 
   /* Configure projects for major browsers */
