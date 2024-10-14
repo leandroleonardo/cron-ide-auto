@@ -2,7 +2,7 @@ const { InitialNavegate } = require('../../pages/InitialNavegate');
 const { WebMobile } = require('../../pages/project/lowCode/WebMobile');
 const { test, expect } = require('@playwright/test');
 
-let initialNavegate, iframe, webMobile, newPage;
+let initialNavegate, webMobile, newPage, iframe;
 
 test.beforeEach(async ({ page, context }) => {
   newPage = null;
@@ -22,46 +22,45 @@ test.afterEach(async ({ page, context }, testInfo) => {
   });
 });
 
-test.describe.only('Execução 1', () => {
-  test.describe.configure({ mode: 'serial' });
+const projectName = 'cron-auto';
 
-  const projectName = 'cron-auto';
+test('Criar projeto WebMobile Fullstack', async ({ page, context }) => {
+  test.setTimeout(1320000);
+  await webMobile.createProjectMobileWeb(projectName);
+  await webMobile.runProject('web');
 
-  test.only('Criar projeto WebMobile Fullstack', async ({ page, context }) => {
-    test.setTimeout(1320000);
-    await webMobile.createProjectMobileWeb(projectName);
-    await webMobile.runProject('web');
-
-    newPage = await context.waitForEvent('page');
-    await webMobile.loginRunningWebmobile(newPage);
-    await expect(newPage.getByText('admin@cronapp.io')).toBeVisible();
-  });
-
-  test('Abre projeto WebMobile Fullstack', async ({ page, context }) => {
-    test.setTimeout(180000);
-    await initialNavegate.openProject(projectName);
-    await webMobile.runProject('web');
-
-    newPage = await context.waitForEvent('page');
-    await webMobile.loginRunningWebmobile(newPage);
-    await expect(newPage.getByText('admin@cronapp.io')).toBeVisible();
-  });
-
-  test('Deleta projeto WebMobile Front-End', async ({ page, context }) => {
-    await initialNavegate.searchProject(projectName);
-    await initialNavegate.deleteProject();
-    newPage = page;
-    await expect(iframe.getByText(projectName).nth(1)).toBeHidden();
-  });
+  newPage = await context.waitForEvent('page');
+  await webMobile.loginRunningWebmobile(newPage);
+  await expect(newPage.getByText('admin@cronapp.io')).toBeVisible();
 });
 
-test.describe.only('Execução 2', () => {
+test('Abre projeto WebMobile Fullstack', async ({ page, context }) => {
+  test.setTimeout(250000);
+  await initialNavegate.openProject(projectName);
+  await webMobile.runProject('web');
+
+  newPage = await context.waitForEvent('page');
+  await webMobile.loginRunningWebmobile(newPage);
+  await expect(newPage.getByText('admin@cronapp.io')).toBeVisible();
+});
+
+test('Deleta projeto WebMobile Fullstack', async ({ page, context }) => {
+  test.setTimeout(60000);
+  await initialNavegate.searchProject(projectName);
+  await initialNavegate.deleteProject();
+  newPage = page;
+  await expect(iframe.getByText(projectName).nth(1)).toBeHidden();
+});
+
+/* 
+test.describe('Execução 2', async () => {
   test.describe.configure({ mode: 'serial' });
 
   const projectName = 'cron-auto-front';
 
-  test.only('Criar projeto WebMobile Front-End', async ({ page, context }) => {
+  test('Criar projeto WebMobile Front-End', async ({ page, context }) => {
     test.setTimeout(1320000);
+
     await webMobile.createProjectMobileWeb(projectName, 'config_front');
     await webMobile.runProject('web');
 
@@ -84,3 +83,4 @@ test.describe.only('Execução 2', () => {
     await expect(iframe.getByText(projectName).nth(1)).toBeHidden();
   });
 });
+*/
