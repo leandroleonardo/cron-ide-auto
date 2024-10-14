@@ -37,7 +37,7 @@ export class WebMobile {
     await this.iframe.locator('(//*[text()="Não"])[2]').click();
     await this.iframe.getByText(' Started').waitFor({ timeout: 100000 });
 
-    await this.page.waitForTimeout(60000);
+    await this.page.waitForTimeout(32000);
   }
 
   async configureTheProject(config) {
