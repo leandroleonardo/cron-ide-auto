@@ -19,10 +19,19 @@ export class InitialNavegate {
     await this.page.locator('#password').fill(process.env.PASSWORD);
     await this.page.click('#btnEntrar');
 
-    await this.iframe.locator('select[name="billing_subscription"]').selectOption({ index: account_type });
+    let billing_subscription = await this.iframe.locator('select[name="billing_subscription"]');
+
+    if (billing_subscription) {
+      await this.iframe.locator('select[name="billing_subscription"]').selectOption({ index: account_type });
+    }
+
     await this.iframe.locator(`#memory_${ide.memory}`).click();
 
-    await this.page.waitForTimeout(15000);
+    await this.page.waitForTimeout(8000);
+    let termsOfServiceScreen = await this.iframe.locator('//*[text()="Termos de Serviço Beta do Cronapp"]').isVisible();
+    if (termsOfServiceScreen) await this.iframe.getByText('Concordo').click();
+
+    await this.page.waitForTimeout(10000);
     let updatePopupIsVisible = await this.iframe
       .locator("//text()[contains(., 'Nova versão do Cronapp lançada')]")
       .isVisible();
@@ -59,8 +68,7 @@ export class InitialNavegate {
     const projectsThumb = "//div[contains(@ui-class, 'project-thumb')]";
 
     if (!projectExistis) {
-      console.log('\n\nProjeto não encontrado...\n\n');
-      return;
+      throw new Error('\nProjeto não encontrado...\n');
     }
 
     await this.iframe.locator(projectsThumb).first().click();
@@ -69,8 +77,6 @@ export class InitialNavegate {
       let selectedOption = option ? '//*[text()="Sim"]' : '(//*[text()="Não"])[2]';
       let isVisible = await this.iframe.getByText(text).isVisible();
       if (isVisible) {
-        if (text == 'As seguintes bibliotecas têm novas versões. Gostaria de atualizá-las?')
-          console.log('-- Atualizou! --');
         await this.iframe.locator(selectedOption).click();
         if (option) await this.page.waitForTimeout(25000);
       }
@@ -82,7 +88,7 @@ export class InitialNavegate {
     await popupIsVisible('Deseja habilitar o backup automático deste projeto?', false);
 
     await this.iframe.getByText(' Started').waitFor({ timeout: 100000 });
-    await this.page.waitForTimeout(15000);
+    await this.page.waitForTimeout(10000);
   }
 
   async navegateToLink(linkTitle) {
