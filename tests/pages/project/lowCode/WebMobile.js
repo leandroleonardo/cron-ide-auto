@@ -40,6 +40,38 @@ export class WebMobile {
     await this.page.waitForTimeout(32000);
   }
 
+  async createProjectWeb(projectName, config) {
+    const nextButton = await this.iframe.locator('div[ui-id="template-next-button"]');
+
+    await initialNavegate.searchProject(projectName);
+    await this.page.waitForTimeout(1000);
+
+    const projectExistis = await this.iframe.getByText(projectName).nth(1).isVisible();
+    if (projectExistis) await initialNavegate.deleteProject();
+
+    await this.iframe.getByText('+ Novo Projeto').nth(1).click();
+    await this.iframe.getByText('Apenas Web').click();
+    await this.iframe.locator('input[ui-id="newProject-projectName-input"]').fill(projectName);
+    await this.iframe.getByText('Finalizar').click();
+
+    await this.iframe.locator('[ui-id="template-item-cronapp-rad-project"]').click();
+    await this.page.waitForTimeout(1000);
+    await nextButton.click();
+    await this.page.waitForTimeout(1000);
+    if (config) await this.configureTheProject(config);
+    await this.page.waitForTimeout(500);
+    await nextButton.click();
+    await this.page.waitForTimeout(500);
+    await nextButton.click();
+    await this.page.waitForTimeout(500);
+    await this.iframe.locator('[ui-id="template-finish-button"]').click({ delay: 1000 });
+    await this.iframe.locator('[ui-id="dialog_confirmation"]').waitFor({ timeout: 120000 });
+    await this.iframe.locator('(//*[text()="Não"])[2]').click();
+    await this.iframe.getByText(' Started').waitFor({ timeout: 100000 });
+
+    await this.page.waitForTimeout(32000);
+  }
+
   async configureTheProject(config) {
     const configOption = async (option, configField) => {
       let selectedOption = project[config].config[configField];
