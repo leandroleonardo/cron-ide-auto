@@ -24,6 +24,8 @@ module.exports = defineConfig({
   /* Reporter to use. See https://playwright.dev/docs/test-reporters */
   reporter: 'html',
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
+  /* Sets the number of workers to 2, disabling parallelism */
+  workers: 1,
   use: {
     /* Base URL to use in actions like `await page.goto('/')`. */
     // baseURL: 'http://127.0.0.1:3000',
@@ -31,16 +33,18 @@ module.exports = defineConfig({
     trace: 'on-first-retry',
     // Sets the language to Brazilian Portuguese
     locale: 'pt-BR',
-    // Sets the number of workers to 2, disabling parallelism
-    workers: 2,
   },
 
   /* Configure projects for major browsers */
   projects: [
     {
-      name: 'chromium',
-      use: { ...devices['Desktop Chrome'] },
+      name: 'Google Chrome',
+      use: { ...devices['Desktop Chrome'], channel: 'chrome' },
     },
+    //{
+    //  name: 'chromium',
+    //  use: { ...devices['Desktop Chrome'] },
+    //},
     //{
     //  name: "firefox",
     //  use: { ...devices["Desktop Firefox"] },
@@ -62,11 +66,7 @@ module.exports = defineConfig({
     // {
     //   name: 'Microsoft Edge',
     //   use: { ...devices['Desktop Edge'], channel: 'msedge' },
-    // },
-    // {
-    //   name: 'Google Chrome',
-    //   use: { ...devices['Desktop Chrome'], channel: 'chrome' },
-    // },
+    // }
   ],
 
   /* Run your local dev server before starting the tests */
