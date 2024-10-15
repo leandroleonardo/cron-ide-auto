@@ -26,7 +26,7 @@ test.afterEach(async ({ page, context }, testInfo) => {
   });
 });
 
-test.only('Mensagem valida URL mobile', async ({ page }) => {
+test('Mensagem valida URL mobile', async ({ page }) => {
   test.setTimeout(600000);
   await mobileDevices.UrlErrorValidation();
 });

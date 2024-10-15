@@ -26,6 +26,9 @@ export class MobileDevices {
     await this.iframe.locator('//div[@style and contains(text(),"Baixar")]').nth(1).click();
   }
   async generateAndroidBundle() {
+    await this.acessMobileDevices('Configurações');
+    await this.iframe.locator('//*[@tabindex="47"]/*[1]/*[1]').fill('http://qaprojetocomponentes.cloud.cronapp.io/');
+    await this.page.keyboard.press('Control+S');
     await this.acessMobileDevices('Compilar');
     await this.iframe.getByText('Android').click();
     await this.page.waitForTimeout(2000);
