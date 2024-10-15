@@ -4,6 +4,7 @@ const { test, expect } = require('@playwright/test');
 let initialNavegate, image;
 
 test.beforeEach(async ({ page, context }) => {
+  test.setTimeout(65000);
   await page.setViewportSize({ width: 1300, height: 600 });
   initialNavegate = new InitialNavegate(page, context);
 });

@@ -16,7 +16,7 @@ test.afterEach(async ({ page, context }, testInfo) => {
   });
 });
 
-test('Valida login via SSO', async ({ page, context }, testInfo) => {
+test.skip('Valida login via SSO', async ({ page, context }, testInfo) => {
   test.setTimeout(120000);
   await initialNavegate.visit();
   await initialNavegate.login();

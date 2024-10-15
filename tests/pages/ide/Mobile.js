@@ -25,6 +25,7 @@ export class MobileDevices {
     await this.iframe.locator('//*[text()="Sua aplicação foi gerada com sucesso!"]').waitFor({ timeout: 580000 });
     await this.iframe.locator('//div[@style and contains(text(),"Baixar")]').nth(1).click();
   }
+
   async generateAndroidBundle() {
     await this.acessMobileDevices('Configurações');
     await this.iframe.locator('//*[@tabindex="47"]/*[1]/*[1]').fill('http://qaprojetocomponentes.cloud.cronapp.io/');

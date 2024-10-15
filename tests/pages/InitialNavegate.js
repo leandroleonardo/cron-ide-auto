@@ -35,7 +35,6 @@ export class InitialNavegate {
     let updatePopupIsVisible = await this.iframe
       .locator("//text()[contains(., 'Nova versão do Cronapp lançada')]")
       .isVisible();
-    console.log(updatePopupIsVisible);
     if (updatePopupIsVisible) await this.iframe.getByText('OK').click();
   }
 
@@ -48,7 +47,7 @@ export class InitialNavegate {
   }
 
   async searchProject(name) {
-    await this.iframe.getByText('Meus Projetos').click();
+    await this.iframe.locator('//*[text()="Meus Projetos"]').click();
     await this.iframe.locator('input[ui-id="open-project-search-text"]').fill(`${name} `);
     await this.page.keyboard.press('Enter');
     await this.page.waitForTimeout(2000);

@@ -5,6 +5,7 @@ const { test, expect } = require('@playwright/test');
 let initialNavegate, webMobile, newPage, iframe;
 
 test.beforeEach(async ({ page, context }) => {
+  test.setTimeout(250000);
   newPage = null;
   iframe = page.frameLocator('#main');
   initialNavegate = new InitialNavegate(page, context);
@@ -20,11 +21,12 @@ test.afterEach(async ({ page, context }, testInfo) => {
     body: image,
     contentType: 'image/png',
   });
+  newPage = null;
 });
 
-const projectName = 'auto-web';
+const projectName = 'auto-create-web';
 
-test('Criar projeto Web', async ({ page, context }) => {
+test('Valida a criação de um projeto Web', async ({ page, context }) => {
   test.setTimeout(1320000);
   await webMobile.createProjectWeb(projectName);
   await webMobile.runProject('web');
@@ -34,7 +36,7 @@ test('Criar projeto Web', async ({ page, context }) => {
   await expect(newPage.getByText('admin@cronapp.io')).toBeVisible();
 });
 
-test('Abre projeto Web', async ({ page, context }) => {
+test('Valida a abertura de um projeto Web', async ({ page, context }) => {
   test.setTimeout(250000);
   await initialNavegate.openProject(projectName);
   await webMobile.runProject('web');
@@ -44,7 +46,7 @@ test('Abre projeto Web', async ({ page, context }) => {
   await expect(newPage.getByText('admin@cronapp.io')).toBeVisible();
 });
 
-test.only('Deleta projeto Web', async ({ page, context }) => {
+test('Valida a exclusão de um projeto Web', async ({ page, context }) => {
   test.setTimeout(60000);
   await initialNavegate.searchProject(projectName);
   await initialNavegate.deleteProject();

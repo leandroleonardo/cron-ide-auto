@@ -3,20 +3,17 @@ const { test, expect } = require('@playwright/test');
 const { WebMobile } = require('../../pages/project/lowCode/WebMobile');
 const { MobileDevices } = require('../../pages/ide/Mobile');
 
-let initialNavegate, iframe, newPage, webMobile, mobileDevices, image;
+let initialNavegate, webMobile, mobileDevices, image;
 
 test.beforeEach(async ({ page, context }) => {
   test.setTimeout(10000000);
   const projetoApk = 'GeracaoAPK';
-  newPage = null;
-  iframe = page.frameLocator('#main');
   initialNavegate = new InitialNavegate(page, context);
   webMobile = new WebMobile(page, context);
   mobileDevices = new MobileDevices(page, context);
   await initialNavegate.visit();
   await initialNavegate.login();
   await webMobile.createProjectMobileWeb(projetoApk);
-  // await initialNavegate.openProject(projetoApk);
 });
 
 test.afterEach(async ({ page, context }, testInfo) => {
@@ -26,17 +23,18 @@ test.afterEach(async ({ page, context }, testInfo) => {
   });
 });
 
-test('Mensagem valida URL mobile', async ({ page }) => {
+test('Valida a mensagem de URL inválida', async ({ page }) => {
   test.setTimeout(600000);
   await mobileDevices.UrlErrorValidation();
+  await expect(this.iframe.getByText('URL do Servidor (produção)')).toBeVisible();
 });
 
-test('Gerar APK', async ({ page }) => {
+test('Valida a geração de APK', async ({ page }) => {
   test.setTimeout(1000000);
   await mobileDevices.generateAndroidApk();
 });
 
-test('Gerar Bundle Android', async ({ page }) => {
+test('Valida a geração de Bundle Android', async ({ page }) => {
   test.setTimeout(1000000);
   await mobileDevices.generateAndroidBundle();
 });

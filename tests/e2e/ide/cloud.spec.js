@@ -2,9 +2,9 @@ const { InitialNavegate } = require('../../pages/InitialNavegate');
 const { Cloud } = require('../../pages/ide/Cloud');
 const { WebMobile } = require('../../pages/project/lowCode/WebMobile');
 const { test, expect } = require('@playwright/test');
+const { projectName } = require('../../config/project.json');
 
 let initialNavegate, webMobile, cloud, newPage, iframe;
-const projectName = 'qa-cron-teste-33';
 
 test.beforeEach(async ({ page, context }) => {
   test.setTimeout(65000);
@@ -27,7 +27,7 @@ test.afterEach(async ({ page, context }, testInfo) => {
   newPage = null;
 });
 
-test('Valida criação de serviço no Cloud', async ({ page, context }, testInfo) => {
+test('Valida a criação de serviço no Cloud', async ({ page, context }, testInfo) => {
   test.setTimeout(900000);
 
   await initialNavegate.openProject(projectName);
@@ -40,7 +40,7 @@ test('Valida criação de serviço no Cloud', async ({ page, context }, testInfo
   await expect(newPage.getByText('admin@cronapp.io')).toBeVisible();
 });
 
-test('Valida execução de projeto no Cloud', async ({ page, context }) => {
+test('Valida a execução de projeto no Cloud', async ({ page, context }) => {
   test.setTimeout(70000);
 
   await cloud.accessWindow();
@@ -52,7 +52,7 @@ test('Valida execução de projeto no Cloud', async ({ page, context }) => {
   await expect(newPage.getByText('admin@cronapp.io')).toBeVisible();
 });
 
-test('Valida remoção de serviço do Cloud', async ({ page, context }, testInfo) => {
+test('Valida a remoção de serviço do Cloud', async ({ page, context }, testInfo) => {
   test.setTimeout(70000);
 
   await cloud.accessWindow();

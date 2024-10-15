@@ -12,6 +12,7 @@ const { defineConfig, devices } = require('@playwright/test');
  */
 
 module.exports = defineConfig({
+  globalSetup: require.resolve('./tests/global-setup.js'),
   testDir: './tests',
   /* Run tests in files in parallel */
   fullyParallel: true,
