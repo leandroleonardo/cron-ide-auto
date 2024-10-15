@@ -15,23 +15,29 @@ export class MobileDevices {
     await this.page.waitForTimeout(2000);
   }
 
-  async generateApkAndroid() {
+  async generateAndroidApk() {
     await this.acessMobileDevices('Configurações');
     await this.iframe.locator('//*[@tabindex="47"]/*[1]/*[1]').fill('http://qaprojetocomponentes.cloud.cronapp.io/');
     await this.page.keyboard.press('Control+S');
     await this.acessMobileDevices('Compilar');
     await this.iframe.getByText('Android').click();
     await this.iframe.locator('//div[@style and contains(text(),"OK")]').click();
-    await this.iframe.locator('//*[text()="Sua aplicação foi gerada com sucesso!"]').waitFor({ timeout: 480000 });
+    await this.iframe.locator('//*[text()="Sua aplicação foi gerada com sucesso!"]').waitFor({ timeout: 580000 });
+    await this.iframe.locator('//div[@style and contains(text(),"Baixar")]').nth(1).click();
+  }
+  async generateAndroidBundle() {
+    await this.acessMobileDevices('Compilar');
+    await this.iframe.getByText('Android').click();
+    await this.page.waitForTimeout(2000);
+    await this.iframe.locator('//*[@tabindex="3"]').click();
+    await this.iframe.locator('//div[@data-cell-index="0" and text()="Release"]').click();
+    await this.iframe.locator('//div[@style and contains(text(),"OK")]').click();
+    await this.iframe.locator('//*[text()="Sua aplicação foi gerada com sucesso!"]').waitFor({ timeout: 580000 });
     await this.iframe.locator('//div[@style and contains(text(),"Baixar")]').nth(1).click();
   }
 
   async UrlErrorValidation() {
-    await this.iframe.locator('[ui-id="header-hambuguer"]').click();
-    await this.page.waitForTimeout(1000);
-    await this.iframe.getByText('Deploy').first().click();
-    await this.iframe.getByText('Dispositivos Móveis').first().click();
-    await this.iframe.getByText('Compilar').click();
+    await this.acessMobileDevices('Compilar');
     await this.iframe.getByText('Android').click();
     await expect(this.iframe.getByText('Você precisa informar a URL de produção do Servidor!')).toBeVisible();
     await this.iframe.locator('//div[@style and contains(text(),"OK")]').click();
