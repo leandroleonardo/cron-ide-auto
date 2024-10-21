@@ -16,6 +16,7 @@ export class DataBase {
   }
 
   async savedAllchanges() {
+    await this.page.waitForTimeout(1000);
     await this.iframe.locator('[ui-id="toolbar-save-all"]').click();
   }
 }

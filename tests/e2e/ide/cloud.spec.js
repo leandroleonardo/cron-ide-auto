@@ -24,7 +24,11 @@ test.afterEach(async ({ page, context }, testInfo) => {
     body: image,
     contentType: 'image/png',
   });
-  newPage = null;
+  if (newPage) {
+    await newPage.close();
+    newPage = null;
+  }
+  await initialNavegate.IDELogout();
 });
 
 test('Valida a criação de serviço no Cloud', async ({ page, context }, testInfo) => {

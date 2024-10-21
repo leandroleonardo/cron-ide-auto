@@ -21,12 +21,16 @@ test.afterEach(async ({ page, context }, testInfo) => {
     body: image,
     contentType: 'image/png',
   });
-  await newPage.close();
-  newPage = null;
+  if (newPage) {
+    await newPage.close();
+    newPage = null;
+  }
   await initialNavegate.IDELogout();
 });
 
 const projectName = 'auto-create-webMobile';
+
+/* Valida criação de projeto Full-stack */
 
 test('Valida a criação de um projeto WebMobile', async ({ page, context }) => {
   test.setTimeout(1320000);
@@ -52,16 +56,17 @@ test('Valida a exclusão de um projeto WebMobile', async ({ page, context }) => 
   test.setTimeout(60000);
   await initialNavegate.searchProject(projectName);
   await initialNavegate.deleteProject();
-  newPage = page;
   await expect(iframe.getByText(projectName).nth(1)).toBeHidden();
 });
+
+const projectFrontName = 'auto-create-front';
 
 /* Valida criação de projeto Front-end */
 
 test('Valida a criação de um projeto WebMobile - Front-end', async ({ page, context }) => {
   test.setTimeout(1320000);
 
-  await webMobile.createProjectMobileWeb(projectName, 'config_front');
+  await webMobile.createProjectMobileWeb(projectFrontName, 'config_front');
   await webMobile.runProject('web');
 
   newPage = await context.waitForEvent('page');
@@ -70,15 +75,14 @@ test('Valida a criação de um projeto WebMobile - Front-end', async ({ page, co
 
 test('Valida a abertura de um projeto WebMobile - Front-end', async ({ page, context }) => {
   test.setTimeout(180000);
-  await initialNavegate.openProject(projectName);
+  await initialNavegate.openProject(projectFrontName);
   await webMobile.runProject('web');
   newPage = await context.waitForEvent('page');
   await expect(newPage.locator('#main-view')).toBeVisible({ timeout: 50000 });
 });
 
 test('Valida a exclusão de um projeto WebMobile - Frone-end', async ({ page, context }) => {
-  await initialNavegate.searchProject(projectName);
+  await initialNavegate.searchProject(projectFrontName);
   await initialNavegate.deleteProject();
-  newPage = page;
-  await expect(iframe.getByText(projectName).nth(1)).toBeHidden();
+  await expect(iframe.getByText(projectFrontName).nth(1)).toBeHidden();
 });

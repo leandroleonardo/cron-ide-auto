@@ -21,8 +21,10 @@ test.afterEach(async ({ page, context }, testInfo) => {
     body: image,
     contentType: 'image/png',
   });
-  await newPage.close();
-  newPage = null;
+  if (newPage) {
+    await newPage.close();
+    newPage = null;
+  }
   await initialNavegate.IDELogout();
 });
 
@@ -52,6 +54,5 @@ test('Valida a exclusão de um projeto Web', async ({ page, context }) => {
   test.setTimeout(60000);
   await initialNavegate.searchProject(projectName);
   await initialNavegate.deleteProject();
-  newPage = page;
   await expect(iframe.getByText(projectName).nth(1)).toBeHidden();
 });

@@ -41,7 +41,7 @@ export class InitialNavegate {
   async IDELogout() {
     await this.iframe.locator('[id="rightTopBar"]').click();
     await this.iframe.locator('[onclick="exitIDE()"]').click();
-    await this.page.locator('[id="btnEntrar"]').waitFor({ timeout: 60000 });
+    await this.page.waitForTimeout(1000);
   }
 
   async getVersion() {
