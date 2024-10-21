@@ -1,0 +1,16 @@
+{
+  "config_servico_dados": {
+    "config": {
+      "idAplication": "",
+      "includeAuth": false,
+      "typeAuth": ""
+    }
+  },
+  "config_servico_negocio": {
+    "config": {
+        "idAplication": "",
+        "includeAuth": false,
+        "typeAuth": ""
+      }
+  }
+}

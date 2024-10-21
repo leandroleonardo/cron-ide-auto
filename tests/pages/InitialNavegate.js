@@ -12,17 +12,17 @@ export class InitialNavegate {
   }
 
   async login() {
-    const account_type = ide.env == 'ide-s' || ide.env == 'ide-a' ? 0 : 1;
-
     await this.page.waitForTimeout(1000);
     await this.page.locator('#username').fill(process.env.EMAIL);
     await this.page.locator('#password').fill(process.env.PASSWORD);
     await this.page.click('#btnEntrar');
 
-    let billing_subscription = await this.iframe.locator('select[name="billing_subscription"]');
+    let billing_subscription = await this.iframe.locator('#billing_subscription');
 
     if (billing_subscription) {
-      await this.iframe.locator('select[name="billing_subscription"]').selectOption({ index: account_type });
+      await this.iframe
+        .locator('#billing_subscription')
+        .selectOption({ label: 'Techne Cronapp - não arquivar! - Techne - Sandbox' });
     }
 
     await this.iframe.locator(`#memory_${ide.memory}`).click();
