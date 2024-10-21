@@ -21,7 +21,9 @@ test.afterEach(async ({ page, context }, testInfo) => {
     body: image,
     contentType: 'image/png',
   });
+  await newPage.close();
   newPage = null;
+  await initialNavegate.IDELogout();
 });
 
 const projectName = 'auto-create-webMobile';
@@ -54,7 +56,7 @@ test('Valida a exclusão de um projeto WebMobile', async ({ page, context }) => 
   await expect(iframe.getByText(projectName).nth(1)).toBeHidden();
 });
 
-/* Cria projeto Front-end */
+/* Valida criação de projeto Front-end */
 
 test('Valida a criação de um projeto WebMobile - Front-end', async ({ page, context }) => {
   test.setTimeout(1320000);

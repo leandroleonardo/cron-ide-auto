@@ -19,5 +19,7 @@ export default async () => {
   await initialNavegate.login();
 
   await webMobile.createProjectMobileWeb(projectName);
-  await webMobile.runProject('web');
+  await webMobile.runProject();
+
+  await initialNavegate.IDELogout();
 };

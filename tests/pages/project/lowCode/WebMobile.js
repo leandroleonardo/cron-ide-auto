@@ -104,7 +104,12 @@ export class WebMobile {
       .getByText('Aplicação iniciada com sucesso! Como você deseja abri-la?')
       .waitFor({ timeout: 120000 });
     await this.page.waitForTimeout(1000);
-    if (device) await this.iframe.locator(`[ui-id="openProject-runMobileWeb-${device}-btn"]`).click();
+    if (device == 'web') await this.iframe.locator(`[ui-id="openProject-runMobileWeb-${device}-btn"]`).click();
+    else await this.iframe.locator("//div[contains (@style, 'rwt-resources/themes/images/6ef91d03.svg')]").click();
+  }
+
+  async closeTab() {
+    await initialNavegate.exit();
   }
 
   async loginRunningWebmobile(newPage) {

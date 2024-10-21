@@ -21,6 +21,7 @@ test.afterEach(async ({ page, context }, testInfo) => {
     body: image,
     contentType: 'image/png',
   });
+  await initialNavegate.IDELogout();
 });
 
 test('Valida o acesso a tela de banco de dados', async ({ page, context }, testInfo) => {
@@ -35,5 +36,6 @@ test('Valida o acesso a tela de adicionar banco de dados', async ({ page, contex
   await initialNavegate.openProject(projectName);
   await dataBase.accessDataBase();
   await dataBase.accessAddDataBase();
+  await dataBase.savedAllchanges();
   await expect(iframe.getByText('Novo banco de dados na nuvem')).toBeVisible();
 });

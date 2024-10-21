@@ -38,6 +38,12 @@ export class InitialNavegate {
     if (updatePopupIsVisible) await this.iframe.getByText('OK').click();
   }
 
+  async IDELogout() {
+    await this.iframe.locator('[id="rightTopBar"]').click();
+    await this.iframe.locator('[onclick="exitIDE()"]').click();
+    await this.page.locator('[id="btnEntrar"]').waitFor({ timeout: 60000 });
+  }
+
   async getVersion() {
     await this.iframe.getByText('Ajuda').click();
     await this.iframe.getByText('Sobre').click();
@@ -47,7 +53,7 @@ export class InitialNavegate {
   }
 
   async searchProject(name) {
-    await this.iframe.locator('//*[text()="Meus Projetos"]').click();
+    await this.iframe.locator('[ui-id="main-menu-my-projects"]').click();
     await this.iframe.locator('input[ui-id="open-project-search-text"]').fill(`${name} `);
     await this.page.keyboard.press('Enter');
     await this.page.waitForTimeout(2000);

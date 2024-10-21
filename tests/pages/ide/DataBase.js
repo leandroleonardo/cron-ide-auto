@@ -14,4 +14,8 @@ export class DataBase {
   async accessAddDataBase() {
     await this.iframe.locator('[ui-id="context-btnForm"]').click();
   }
+
+  async savedAllchanges() {
+    await this.iframe.locator('[ui-id="toolbar-save-all"]').click();
+  }
 }

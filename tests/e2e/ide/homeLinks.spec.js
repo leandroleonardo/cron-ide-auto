@@ -14,6 +14,8 @@ test.afterEach(async ({ page, context }, testInfo) => {
     body: image,
     contentType: 'image/png',
   });
+  await newPage.close();
+  await initialNavegate.IDELogout();
 });
 
 test('Valida link Webinars', async ({ page, context }, testInfo) => {

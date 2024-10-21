@@ -20,13 +20,16 @@ test.afterEach(async ({ page, context }, testInfo) => {
     body: image,
     contentType: 'image/png',
   });
+  await newPage.close();
+  newPage = null;
+  await initialNavegate.IDELogout();
 });
 
 const projectDado = 'Auto-Serviço-Dados';
 const projectNegocio = 'Auto-Serviço-Negocio';
 
 //Testes criação para projeto de micro serviço de dados
-test.only('Valida criação Micro Serviço de dados', async ({ page, context }) => {
+test('Valida criação Micro Serviço de dados', async ({ page, context }) => {
   test.setTimeout(1320000);
   await microServico.createProjectMicroServico(projectDado);
   await microServico.runProject('Swagger');
@@ -54,7 +57,7 @@ test('Valida exclusão projeto Micro Serviço de dados', async ({ page, context 
   await expect(iframe.getByText(projectDado).nth(1)).toBeHidden();
 });
 /*Testes criação para projeto de micro serviço de negócio*/
-test.only('Valida criação projeto Micro Serviço de Negócio', async ({ page, context }) => {
+test('Valida criação projeto Micro Serviço de Negócio', async ({ page, context }) => {
   test.setTimeout(1320000);
   await microServico.createProjectMicroServico(projectNegocio);
   await microServico.runProject('Swagger');

@@ -21,7 +21,9 @@ test.afterEach(async ({ page, context }, testInfo) => {
     body: image,
     contentType: 'image/png',
   });
+  await newPage.close();
   newPage = null;
+  await initialNavegate.IDELogout();
 });
 
 const projectName = 'auto-create-web';

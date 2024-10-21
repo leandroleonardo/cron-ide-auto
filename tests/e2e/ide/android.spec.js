@@ -21,6 +21,7 @@ test.afterEach(async ({ page, context }, testInfo) => {
     body: image,
     contentType: 'image/png',
   });
+  await initialNavegate.IDELogout();
 });
 
 test('Valida a mensagem de URL inválida', async ({ page }) => {
