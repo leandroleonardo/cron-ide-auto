@@ -1,18 +1,15 @@
-const { InitialNavegate } = require('../../pages/InitialNavegate');
-const { DataBase } = require('../../pages/ide/DataBase');
-const { test, expect } = require('@playwright/test');
-const { projectName } = require('../../config/project.json');
+import { DataBase } from '../../pages/ide/DataBase';
+import { test, expect } from '@playwright/test';
+import { projectName } from '../../config/project.json';
 
-let initialNavegate, iframe, dataBase;
+let dataBase;
 
 test.beforeEach(async ({ page, context }) => {
   test.setTimeout(65000);
-  iframe = page.frameLocator('#main');
-  initialNavegate = new InitialNavegate(page, context);
   dataBase = new DataBase(page, context);
 
-  await initialNavegate.visit();
-  await initialNavegate.login();
+  await dataBase.visit();
+  await dataBase.IDElogin();
 });
 
 test.afterEach(async ({ page, context }, testInfo) => {
@@ -21,21 +18,21 @@ test.afterEach(async ({ page, context }, testInfo) => {
     body: image,
     contentType: 'image/png',
   });
-  await initialNavegate.IDELogout();
+  await dataBase.IDELogout();
 });
 
 test('Valida o acesso a tela de banco de dados', async ({ page, context }, testInfo) => {
   test.setTimeout(250000);
-  await initialNavegate.openProject(projectName);
+  await dataBase.IDEopenProject(projectName);
   await dataBase.accessDataBase();
-  await expect(iframe.getByText('jdbc/main')).toBeVisible();
+  await expect(page.frameLocator('#main').getByText('jdbc/main')).toBeVisible();
 });
 
 test('Valida o acesso a tela de adicionar banco de dados', async ({ page, context }, testInfo) => {
   test.setTimeout(250000);
-  await initialNavegate.openProject(projectName);
+  await dataBase.IDEopenProject(projectName);
   await dataBase.accessDataBase();
   await dataBase.accessAddDataBase();
   await dataBase.savedAllchanges();
-  await expect(iframe.getByText('Novo banco de dados na nuvem')).toBeVisible();
+  await expect(page.frameLocator('#main').getByText('Novo banco de dados na nuvem')).toBeVisible();
 });

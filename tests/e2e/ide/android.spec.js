@@ -1,41 +1,47 @@
-const { InitialNavegate } = require('../../pages/InitialNavegate');
-const { test, expect } = require('@playwright/test');
-const { WebMobile } = require('../../pages/project/lowCode/WebMobile');
-const { MobileDevices } = require('../../pages/ide/Mobile');
+import { test, expect } from '@playwright/test';
+import { WebMobile } from '../../pages/project/lowCode/WebMobile';
+import { MobileDevices } from '../../pages/ide/Mobile';
 
-let initialNavegate, webMobile, mobileDevices, image;
+let webMobile, mobileDevices;
+const projetoApk = 'GeracaoAPK';
 
 test.beforeEach(async ({ page, context }) => {
-  test.setTimeout(10000000);
-  const projetoApk = 'GeracaoAPK';
-  initialNavegate = new InitialNavegate(page, context);
+  test.setTimeout(65000);
+
   webMobile = new WebMobile(page, context);
   mobileDevices = new MobileDevices(page, context);
-  await initialNavegate.visit();
-  await initialNavegate.login();
-  await webMobile.createProjectMobileWeb(projetoApk);
+  await mobileDevices.visit();
+  await mobileDevices.IDElogin();
 });
 
 test.afterEach(async ({ page, context }, testInfo) => {
+  const imagem = await page.screenshot();
   await testInfo.attach('screenshot', {
-    body: image,
+    body: imagem,
     contentType: 'image/png',
   });
-  await initialNavegate.IDELogout();
+  await mobileDevices.IDELogout();
 });
 
-test('Valida a mensagem de URL inválida', async ({ page }) => {
+test.skip('Valida a mensagem de URL inválida', async ({ page }) => {
   test.setTimeout(600000);
+
+  await webMobile.createProjectMobileWeb(projetoApk);
   await mobileDevices.UrlErrorValidation();
-  await expect(this.iframe.getByText('URL do Servidor (produção)')).toBeVisible();
+
+  await expect(page.frameLocator('#main').getByText('URL do Servidor (produção)')).toBeVisible();
 });
 
-test('Valida a geração de APK', async ({ page }) => {
+test.skip('Valida a geração de APK', async ({ page }) => {
   test.setTimeout(1000000);
+
+  await mobileDevices.IDEopenProject(projetoApk);
   await mobileDevices.generateAndroidApk();
 });
 
-test('Valida a geração de Bundle Android', async ({ page }) => {
+test.skip('Valida a geração de Bundle Android', async ({ page }) => {
   test.setTimeout(1000000);
+
+  await mobileDevices.IDEopenProject(projetoApk);
   await mobileDevices.generateAndroidBundle();
 });

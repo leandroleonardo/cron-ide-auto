@@ -1,9 +1,9 @@
 import { expect } from '@playwright/test';
+import { BasePage } from '../BasePage';
 
-export class Cloud {
+export class Cloud extends BasePage {
   constructor(page, context) {
-    this.page = page;
-    this.iframe = page.frameLocator('#main');
+    super(page);
   }
 
   async accessWindow() {
@@ -88,5 +88,10 @@ export class Cloud {
     await this.iframe.locator('[ui-id="dialog-input-text-parent"]').fill('apague');
     await this.iframe.locator('//*[text()="OK"]').click();
     await this.page.waitForTimeout(10000);
+  }
+
+  async closeInitialNavegatPopUp() {
+    const popUpisVisible = await this.iframe.locator("//div[contains (@style, '/6ef91d03.svg')]").isVisible();
+    if (popUpisVisible) await this.iframe.locator('//*[text()="Fechar"]').click();
   }
 }

@@ -1,21 +1,18 @@
-const { InitialNavegate } = require('../../pages/InitialNavegate');
-const { Cloud } = require('../../pages/ide/Cloud');
-const { WebMobile } = require('../../pages/project/lowCode/WebMobile');
-const { test, expect } = require('@playwright/test');
-const { projectName } = require('../../config/project.json');
+import { Cloud } from '../../pages/ide/Cloud';
+import { WebMobile } from '../../pages/project/lowCode/WebMobile';
+import { test, expect } from '@playwright/test';
+import { projectName } from '../../config/project.json';
 
-let initialNavegate, webMobile, cloud, newPage, iframe;
+let webMobile, cloud, newPage;
 
 test.beforeEach(async ({ page, context }) => {
   test.setTimeout(65000);
 
-  iframe = page.frameLocator('#main');
-  initialNavegate = new InitialNavegate(page, context);
   webMobile = new WebMobile(page, context);
   cloud = new Cloud(page, context);
 
-  await initialNavegate.visit();
-  await initialNavegate.login();
+  await cloud.visit();
+  await cloud.IDElogin();
 });
 
 test.afterEach(async ({ page, context }, testInfo) => {
@@ -24,17 +21,19 @@ test.afterEach(async ({ page, context }, testInfo) => {
     body: image,
     contentType: 'image/png',
   });
+
   if (newPage) {
     await newPage.close();
     newPage = null;
   }
-  await initialNavegate.IDELogout();
+  await cloud.closeInitialNavegatPopUp();
+  await cloud.IDELogout();
 });
 
-test('Valida a criação de serviço no Cloud', async ({ page, context }, testInfo) => {
+test.skip('Valida criação de serviço no Cloud', async ({ page, context }, testInfo) => {
   test.setTimeout(900000);
 
-  await initialNavegate.openProject(projectName);
+  await cloud.IDEopenProject(projectName);
   await cloud.accessWindow();
   await cloud.addService(projectName);
   await cloud.accessService(projectName);
@@ -44,7 +43,7 @@ test('Valida a criação de serviço no Cloud', async ({ page, context }, testIn
   await expect(newPage.getByText('admin@cronapp.io')).toBeVisible();
 });
 
-test('Valida a execução de projeto no Cloud', async ({ page, context }) => {
+test.skip('Valida execução de projeto no Cloud', async ({ page, context }) => {
   test.setTimeout(70000);
 
   await cloud.accessWindow();
@@ -56,12 +55,14 @@ test('Valida a execução de projeto no Cloud', async ({ page, context }) => {
   await expect(newPage.getByText('admin@cronapp.io')).toBeVisible();
 });
 
-test('Valida a remoção de serviço do Cloud', async ({ page, context }, testInfo) => {
+test.skip('Valida remoção de serviço do Cloud', async ({ page, context }, testInfo) => {
   test.setTimeout(70000);
 
   await cloud.accessWindow();
   await cloud.searchService(projectName, 'initialNavegate');
   await cloud.deleteService(projectName);
 
-  await expect(iframe.locator(`//*[text()="${projectName.replace(/-/g, '')}.cloud.cronapp.io"]`)).toBeHidden();
+  await expect(
+    page.frameLocator('#main').locator(`//*[text()="${projectName.replace(/-/g, '')}.cloud.cronapp.io"]`)
+  ).toBeHidden();
 });

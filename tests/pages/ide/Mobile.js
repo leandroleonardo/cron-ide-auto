@@ -1,9 +1,9 @@
 import { expect } from '@playwright/test';
+import { BasePage } from '../BasePage';
 
-export class MobileDevices {
+export class MobileDevices extends BasePage {
   constructor(page, context) {
-    this.page = page;
-    this.iframe = page.frameLocator('#main');
+    super(page);
   }
 
   async acessMobileDevices(destino) {
@@ -45,7 +45,6 @@ export class MobileDevices {
     await this.iframe.getByText('Android').click();
     await expect(this.iframe.getByText('Você precisa informar a URL de produção do Servidor!')).toBeVisible();
     await this.iframe.locator('//div[@style and contains(text(),"OK")]').click();
-    await this.page.waitForTimeout(2000);
-    await expect(this.iframe.getByText('URL do Servidor (produção)')).toBeVisible();
+    await this.page.waitForTimeout(1000);
   }
 }

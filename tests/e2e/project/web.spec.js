@@ -1,18 +1,16 @@
-const { InitialNavegate } = require('../../pages/InitialNavegate');
-const { WebMobile } = require('../../pages/project/lowCode/WebMobile');
-const { test, expect } = require('@playwright/test');
+import { WebMobile } from '../../pages/project/lowCode/WebMobile';
+import { test, expect } from '@playwright/test';
 
-let initialNavegate, webMobile, newPage, iframe;
+let webMobile, newPage;
+const projectName = 'auto-create-web';
 
 test.beforeEach(async ({ page, context }) => {
   test.setTimeout(250000);
   newPage = null;
-  iframe = page.frameLocator('#main');
-  initialNavegate = new InitialNavegate(page, context);
   webMobile = new WebMobile(page, context);
 
-  await initialNavegate.visit();
-  await initialNavegate.login();
+  await webMobile.visit();
+  await webMobile.IDElogin();
 });
 
 test.afterEach(async ({ page, context }, testInfo) => {
@@ -25,34 +23,38 @@ test.afterEach(async ({ page, context }, testInfo) => {
     await newPage.close();
     newPage = null;
   }
-  await initialNavegate.IDELogout();
+  await webMobile.IDELogout();
 });
 
-const projectName = 'auto-create-web';
-
-test('Valida a criação de um projeto Web', async ({ page, context }) => {
+test('Valida criação de projeto Web', async ({ page, context }) => {
   test.setTimeout(1320000);
+
   await webMobile.createProjectWeb(projectName);
-  await webMobile.runProject('web');
+  await webMobile.runProject();
+  await webMobile.openProject('web');
 
   newPage = await context.waitForEvent('page');
   await webMobile.loginRunningWebmobile(newPage);
   await expect(newPage.getByText('admin@cronapp.io')).toBeVisible();
 });
 
-test('Valida a abertura de um projeto Web', async ({ page, context }) => {
+test('Valida abertura de projeto Web', async ({ page, context }) => {
   test.setTimeout(250000);
-  await initialNavegate.openProject(projectName);
-  await webMobile.runProject('web');
+
+  await webMobile.IDEopenProject(projectName);
+  await webMobile.runProject();
+  await webMobile.openProject('web');
 
   newPage = await context.waitForEvent('page');
   await webMobile.loginRunningWebmobile(newPage);
   await expect(newPage.getByText('admin@cronapp.io')).toBeVisible();
 });
 
-test('Valida a exclusão de um projeto Web', async ({ page, context }) => {
+test('Valida exclusão de projeto Web', async ({ page, context }) => {
   test.setTimeout(60000);
-  await initialNavegate.searchProject(projectName);
-  await initialNavegate.deleteProject();
-  await expect(iframe.getByText(projectName).nth(1)).toBeHidden();
+
+  await webMobile.searchProject(projectName);
+  await webMobile.deleteProject();
+
+  await expect(page.frameLocator('#main').getByText(projectName).nth(1)).toBeHidden();
 });

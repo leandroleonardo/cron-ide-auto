@@ -1,5 +1,5 @@
-const { InitialNavegate } = require('../../pages/InitialNavegate');
-const { test, expect } = require('@playwright/test');
+import { InitialNavegate } from '../../pages/InitialNavegate';
+import { test, expect } from '@playwright/test';
 
 let initialNavegate, image, newPage;
 
@@ -20,8 +20,9 @@ test.afterEach(async ({ page, context }, testInfo) => {
 
 test('Valida link Webinars', async ({ page, context }, testInfo) => {
   test.setTimeout(65000);
+
   await initialNavegate.visit();
-  await initialNavegate.login();
+  await initialNavegate.IDElogin();
   await initialNavegate.navegateToLink('Webinars');
   newPage = await context.waitForEvent('page');
   await expect(
@@ -32,8 +33,9 @@ test('Valida link Webinars', async ({ page, context }, testInfo) => {
 
 test('Valida link Boas Práticas', async ({ page, context }, testInfo) => {
   test.setTimeout(65000);
+
   await initialNavegate.visit();
-  await initialNavegate.login();
+  await initialNavegate.IDElogin();
   await initialNavegate.navegateToLink('Boas Práticas');
   newPage = await context.waitForEvent('page');
   await expect(newPage.locator('#title-text')).toBeVisible();

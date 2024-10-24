@@ -1,6 +1,6 @@
-const { InitialNavegate } = require('../../pages/InitialNavegate');
-const { WebMobile } = require('../../pages/project/lowCode/WebMobile');
-const { test, expect } = require('@playwright/test');
+import { InitialNavegate } from '../../pages/InitialNavegate';
+import { WebMobile } from '../../pages/project/lowCode/WebMobile';
+import { test, expect } from '@playwright/test';
 
 let initialNavegate, image, webMobile;
 

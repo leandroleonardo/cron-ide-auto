@@ -1,9 +1,8 @@
-import { expect } from '@playwright/test';
+import { BasePage } from '../BasePage';
 
-export class DataBase {
-  constructor(page, context) {
-    this.page = page;
-    this.iframe = page.frameLocator('#main');
+export class DataBase extends BasePage {
+  constructor(page) {
+    super(page);
   }
 
   async accessDataBase() {
