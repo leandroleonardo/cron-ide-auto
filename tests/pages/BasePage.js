@@ -19,11 +19,13 @@ export class BasePage {
     await this.page.click('#btnEntrar');
 
     let billing_subscription = await this.iframe.locator('#billing_subscription');
+    let billing_ide =
+      'ide' === ide['env']
+        ? 'Techne Engenharia e Sistemas LTDA - LN Cronapp - Techne'
+        : 'Techne Cronapp - não arquivar! - Techne - Sandbox';
 
     if (billing_subscription) {
-      await this.iframe
-        .locator('#billing_subscription')
-        .selectOption({ label: 'Techne Cronapp - não arquivar! - Techne - Sandbox' });
+      await this.iframe.locator('#billing_subscription').selectOption({ label: billing_ide });
     }
 
     await this.iframe.locator(`#memory_${ide.memory}`).click();
