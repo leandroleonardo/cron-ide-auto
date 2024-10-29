@@ -24,7 +24,8 @@ export class Mobile extends BasePage {
     await this.iframe.locator('//div[@style and contains(text(),"OK")]').click();
     await this.page.waitForTimeout(3500);
     await this.iframe.getByText('Progresso').waitFor({ state: 'detached', timeout: 580000 });
-    await this.iframe.locator('//div[@style and contains(text(),"Baixar")]').nth(1).click();
+    await this.iframe.locator("(//div[contains (@style, '/save.svg')])[2]").click();
+    await this.page.waitForTimeout(3500);
   }
 
   async generateAndroidBundle() {
@@ -39,7 +40,8 @@ export class Mobile extends BasePage {
     await this.iframe.locator('//div[@style and contains(text(),"OK")]').click();
     await this.page.waitForTimeout(3500);
     await this.iframe.getByText('Progresso').waitFor({ state: 'detached', timeout: 580000 });
-    await this.iframe.locator('//div[@style and contains(text(),"Baixar")]').nth(1).click();
+    await this.iframe.locator("(//div[contains (@style, '/save.svg')])[2]").click();
+    await this.page.waitForTimeout(3500);
   }
 
   async UrlErrorValidation() {
@@ -52,7 +54,6 @@ export class Mobile extends BasePage {
 
   async closeSuccessInstallationPopup() {
     const popUpisVisible = await this.iframe.locator('//*[text()="Download Aplicação Movel"]').isVisible();
-    console.log(popUpisVisible);
     if (popUpisVisible) await this.iframe.locator("//div[contains (@style, '/6ef91d03.svg')]").click();
   }
 }

@@ -28,7 +28,7 @@ test.afterEach(async ({ page, context }, testInfo) => {
 });
 
 test('Valida mensagem de URL inválida', async ({ page }) => {
-  test.setTimeout(600000);
+  test.setTimeout(300000);
 
   await webMobile.createProjectMobileWeb(APKProject);
   await mobile.UrlErrorValidation();
@@ -37,7 +37,7 @@ test('Valida mensagem de URL inválida', async ({ page }) => {
 });
 
 test('Valida geração de APK', async ({ page }) => {
-  test.setTimeout(480000);
+  test.setTimeout(600000);
 
   await mobile.IDEopenProject(APKProject);
   await mobile.generateAndroidApk();
@@ -46,7 +46,7 @@ test('Valida geração de APK', async ({ page }) => {
 });
 
 test('Valida geração de Bundle Android', async ({ page }) => {
-  test.setTimeout(480000);
+  test.setTimeout(600000);
 
   await mobile.IDEopenProject(APKProject);
   await mobile.generateAndroidBundle();

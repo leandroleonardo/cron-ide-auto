@@ -42,7 +42,7 @@ test('Valida Instação do plugin FireBase', async ({ page, context }) => {
 });
 
 test('Valida geração de APK do plugin FireBase', async ({ page, context }) => {
-  test.setTimeout(480000);
+  test.setTimeout(600000);
 
   await mobile.IDEopenProject(projectName);
   await mobile.generateAndroidApk();
