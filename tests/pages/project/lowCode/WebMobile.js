@@ -30,7 +30,7 @@ export class WebMobile extends LowCodePage {
     await this.page.waitForTimeout(500);
     await this.iframe.locator('[ui-id="template-finish-button"]').click({ delay: 1000 });
     await this.iframe.locator('[ui-id="dialog_confirmation"]').waitFor({ timeout: 120000 });
-    await this.page.waitForTimeout(500);
+    await this.page.waitForTimeout(1000);
     await this.iframe.locator('(//*[text()="Não"])[2]').click();
     await this.iframe.getByText(' Started').waitFor({ timeout: 100000 });
 
